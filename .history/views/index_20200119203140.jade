@@ -1,0 +1,6 @@
+extends layout
+
+block content
+  -var ob = JSON.parse(data)
+  h1= title
+  p Welcome to #{ob.shop.name}
