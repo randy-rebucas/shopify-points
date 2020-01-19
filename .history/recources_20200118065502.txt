@@ -1,0 +1,1 @@
+{your ngrok forwarding address}/shopify?shop=your-development-shop.myshopify.com

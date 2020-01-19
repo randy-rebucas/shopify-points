@@ -1,32 +1,31 @@
 var createError = require('http-errors');
+var dotenv = require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var crypto = require('crypto');
+var cookie = require('cookie');
+var nonce = require('nonce')();
+var querystring = require('querystring');
+var request = require('request-promise');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var shopifyRouter = require('./routes/');
+var shopifyRouter = require('./routes/shopify');
 
+// Shopify API configuratios
+const apiKey = process.env.SHOPIFY_API_KEY;
+const apiSecret = process.env.SHOPIFY_API_SECRET;
+const scopes = 'read_products';
+const forwardingAddress = "https://9a11b08c.ngrok.io"; // Replace this with your HTTPS Forwarding address
 // view engine setup
 
 var app = express();
 
-const liquid = require('liquidjs');
-
-const engine = new liquid({
-    root: __dirname, // for layouts and partials
-    extname: '.liquid'
-});
-
 // view engine setup
-app.engine('liquid', engine.express()) // register liquid engine
-app.set('views', ['./partials', './views']) // specify the views directory
-app.set('view engine', 'liquid') // set to default
-
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
