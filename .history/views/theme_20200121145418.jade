@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  //- -var ob = JSON.parse(data)
+  h1 #{title}
+  form(name="asset-form", method="post", action="/assets")
+        div.input
+            span.label Theme ID
+            input(type="text", name="themeId", value='#{themeId}')
+        div.input
+            span.label Description
+            textarea(name="description", cols="40", rows="5")
+        div.actions
+            input(type="submit", value="Create")
+
