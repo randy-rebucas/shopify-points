@@ -23,10 +23,10 @@ exports.index = function(req, res, next) {
   
     request.get(requestUrl, { headers: requestHeaders })
     .then((response) => {
-      // res.status(200).end(response);
-      // const resObj = JSON.parse(response)
-      //   console.log(resObj);
-      res.render('shop', { title: 'Customer' })
+      res.status(200).end(response);
+      const resObj = JSON.parse(response)
+        console.log(resObj);
+      res.render('customer', { title: 'Customer' })
     })
     .catch((error) => {
       res.status(error.statusCode).send(error.error.error_description);

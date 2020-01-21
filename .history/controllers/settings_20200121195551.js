@@ -10,7 +10,7 @@ exports.index = (req, res, next) => {
     .then((shopResponse) => {
       const themeObj = JSON.parse(shopResponse)
   
-      res.render('settings/index', { title: 'Settings', themeId: themeObj.themes[0].id })
+      res.render('theme', { title: 'Settings', themeId: themeObj.themes[0].id })
     })
     .catch((error) => {
       res.status(error.statusCode).send(error.error.error_description);

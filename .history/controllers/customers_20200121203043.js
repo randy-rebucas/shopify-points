@@ -11,7 +11,7 @@ exports.index = (req, res) => {
     //   res.status(200).end(response);
       const resObj = JSON.parse(response)
         console.log(resObj);
-      res.render('customers/index', { title: 'Customer', customers: resObj.customers })
+      res.render('customers/index', { title: 'Customer', data: resObj })
     })
     .catch((error) => {
       res.status(error.statusCode).send(error.error.error_description);

@@ -1,0 +1,13 @@
+extends ./../layout
+
+block content
+  h1= title
+  div
+    table
+        thead
+        tr: th Customers
+        tbody
+        each customer, i in customers
+            tr
+            td 
+                a(href='/admin/post/' + customer.id) #{customer.email} - #{customer.first_name} #{customer.last_name}
