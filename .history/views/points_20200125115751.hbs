@@ -1,0 +1,27 @@
+<h1>{{title}}</h1>
+
+<form action="/points">
+    <input type="hidden" name="metafieldId" value="{{metafieldObj.id}}"/>
+    <div>
+        <label for="wedgit-title">Wedgit Title</label>
+        <input type="text" name="title" value=""/>
+    </div>
+    <div>
+        <label for="wedgit-title">Is Rounded Corner</label>
+        <select name="isrouned">
+            <option>--</option>
+            <option>Yes</option>
+            <option>No</option>
+        </select>
+    </div>
+    <div>
+        <input type="submit" name="submit" value="Submit"/>
+    </div>
+</form>
+{{!-- <ul class="metafield">
+  {{#each metafieldObj}}
+    <li>
+        {{this.namespace}}
+    </li>
+  {{/each}}
+</ul> --}}

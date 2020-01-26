@@ -1,0 +1,15 @@
+<h1>{{title}}</h1>
+<form method="POST" action="/">
+    <input type="hidden" name="metafieldId" value="{{metafield.id}}"/>
+    <table>
+        <tr>
+            <td>Widget Title</td>
+            <td><input type="text" name="title" value="{{metavalue.pointWidgetTitle}}"/></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right;">
+                <input type="submit" name="submit" value="Submit"/>
+            </td>
+        </tr>
+    </table>
+</form>
