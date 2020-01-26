@@ -1,0 +1,40 @@
+
+<section>
+    <div class="contaciner">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{title}}</h1>
+                <form method="POST" action="/">
+                    <input type="hidden" name="metafieldId" value="{{metafieldId}}"/>
+                    <table>
+                        <tr>
+                            <td>Widget Title</td>
+                            <td><input type="text" name="title" value="{{metavalue.pointWidgetTitle}}"/></td>
+                        </tr>
+                        <tr>
+                            <td>Token</td>
+                            <td><input type="text" name="token" value="{{metavalue.pointWidgetToken}}"/></td>
+                        </tr>
+                        <tr>
+                            <td>Server address</td>
+                            <td><input type="text" name="server" value="{{metavalue.pointWidgetServer}}"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: right;">
+                                <input type="submit" name="submit" value="Submit"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
