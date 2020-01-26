@@ -161,6 +161,7 @@ aren’t available to the outside world. */
                 const totalPoints = (resObj != null) ? resObj.total_tp_points : 0;
                 $('div#point-wrapper #point-count').text(totalPoints);
                 
+                console.log(totalPoints)
                 if(totalPoints < 150 || totalPoints === 150) {
                     $('.selector-wrapper').hide();
                 }

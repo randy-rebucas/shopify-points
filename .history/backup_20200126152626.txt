@@ -34,16 +34,5 @@ Manage marketing
 Manage gift cards
 Manage your Online Store
 Manage other data
-----------------
-locales/en.default.json line 362 [emplty the value]
 
-section/product-template.liquid replace line 148
 
-<select class="single-option-selector single-option-selector-{{ section.id }} product-form__input"
-      id="SingleOptionSelector-{{ forloop.index0 }}"
-      data-index="option{{ forloop.index }}"
-    >
-    {% for variant in product.variants %}
-  <option value="{{ variant.title }}" {%- if variant == current_variant %} selected="selected" {%- endif -%}>{{ variant.price | money }} for {{ variant.title }} TP</option>
-  {% endfor %}
-</select> 
