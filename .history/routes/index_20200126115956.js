@@ -4,6 +4,7 @@ var router = express.Router();
 const cookie = require('cookie');
 const request = require('request-promise');
 
+const middleWare = require('./../middlewares/initConfig');
 /* GET resource. */
 router.get('/', (req, res) => {
     const shopCookie = cookie.parse(req.headers.cookie);

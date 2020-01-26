@@ -127,7 +127,7 @@ aren’t available to the outside world. */
             if (confirm('This action will deduct ' + $('.product-details li:last-child() span').last().text() + ' points to your current points make sure you purchase the item.')) {
                 const srcId = 61;
                 const usedPoints = $('.product-details li:last-child() span').last().text();
-                const selectedItems = [{
+                const selectedItems = {
                     "item_name" : $('.list-view-item__title').find('a').text(),
                     "item_price" : $('.cart__price div > dl > div:visible > dd').text(),
                     "user_paid_amount" : $('.cart-subtotal__price').text(),
@@ -135,7 +135,7 @@ aren’t available to the outside world. */
                     "item_category_name" : "",
                     "points_used" : usedPoints,
                     "item_page_link" : $('.list-view-item__title').find('a').attr('href')
-                }]
+                }
                 deductPoints(srcId, getTpSessionId(), getWidgetToken(), usedPoints, selectedItems);
             } else {
                 return false;
@@ -191,7 +191,7 @@ aren’t available to the outside world. */
                 "tpsession_id" : tpSessionId,
                 "access_token" : accessToken,
                 "total_points_used" : usedPoints,
-                "used_points_items" : selectedItems
+                "used_points_items" : [selectedItems]
             }
 
             ajaxRequest(endPoint(), postData, function(response) {

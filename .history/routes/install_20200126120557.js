@@ -128,13 +128,13 @@ router.get('/callback', (req, res) => {
                                     pointWidgetServer: 'https://tastypoints.io/akm/restapi.php',
                                     isRounded: true
                                 });
-
+                            
                                 const metafieldsRequestUrl = 'https://' + shop + '/admin/api/2020-01/metafields.json';
                                 const metafieldsRequestHeaders = {
                                   'X-Shopify-Access-Token': accessToken,
                                   "Content-Type": "application/json"
                                 };
-
+                            
                                 var metafieldsPayload = {
                                     "metafield": {
                                         "namespace": "settings",
@@ -144,7 +144,7 @@ router.get('/callback', (req, res) => {
                                         "value_type": "json_string"
                                     }
                                 }
-
+                              
                                 request.post(metafieldsRequestUrl, {
                                     headers: metafieldsRequestHeaders,
                                     json: metafieldsPayload

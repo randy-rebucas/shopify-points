@@ -32,24 +32,29 @@ aren’t available to the outside world. */
         // $ in this scope references the jQuery object we'll use.
         // Don't use jQuery, or jQuery191, use the dollar sign.
         // Do this and do that, using $.
-
-        // get the url params
-        const queryString = window.location.search;
-        // slice url params
-        const urlParams = new URLSearchParams(queryString);
-        // check if params exist
-        if(urlParams.has('tpsession_id')) {
-            // get specific params
-            // setTpSessionId(urlParams.get('tpsession_id'));
-            setTpSessionId('60655f85-7927-4d3a-ba36-e5582a39280f');
-            // current points - 2449797
+        // set defaults
+        
+        function getTpSessionId() {
+            return localStorage.getItem('tpSessionId');
         }
 
-        function getTpSessionId() { return localStorage.getItem('tpSessionId'); }
-        function setTpSessionId(tpSessionId) { localStorage.setItem('tpSessionId', tpSessionId); }
+        function setTpSessionId(tpSessionId) {
+            localStorage.setItem('tpSessionId', tpSessionId);
+        }
+        // get the url params
+        const queryString = window.location.search;
+
+        // slice url params
+        const urlParams = new URLSearchParams(queryString);
+
         // preparation for dynamic style of floating point wrapper
-        function getBGC() { return 'red'; }
-        function getColor() { return "#fff"; }
+        function getBGC() {
+            return 'red';
+        }
+
+        function getColor() {
+            return "#fff";
+        }
 
         // append the initial html for points
         const pointEl = '<div id="point-wrapper">'+
@@ -84,20 +89,9 @@ aren’t available to the outside world. */
             "text-align": "right",
             "line-height": ".8"
         });
-
-        widgetToken = '';
-        widgetServer = '';
-
-        function getWidgetToken() { return this.widgetToken; }
-        function setWidgetToken(token) { widgetToken = token; }
-
-        function getWidgetServer() { return this.widgetServer; }
-        function setWidgetServer(server) { widgetServer = server; }
-
-        // end point url
-        function endPoint() {
-            return 'https://cors-anywhere.herokuapp.com/' + getWidgetServer();
-        }
+        widgetTitle = '';
+        function getWidgetTitle() { return this.widgetTitle; }
+        function setWidgetTitle(title) { widgetTitle = title; }
 
         getMetafields(function(response) {
             const metafieldsRes = response.metafields;
@@ -106,28 +100,45 @@ aren’t available to the outside world. */
             });
             const metafieldsObj = metafields[0];
             const metafieldVal = JSON.parse(metafieldsObj.value);
-
-            setWidgetToken(metafieldVal.pointWidgetToken);
-            setWidgetServer(metafieldVal.pointWidgetServer);
-
-            $('div#point-wrapper h5').text(metafieldVal.pointWidgetTitle);
-            if (metafieldVal.isRounded) {
+            console.log(metafieldVal);
+            const pointWidgetTitle = metafieldVal.pointWidgetTitle
+            setWidgetTitle(metafieldVal.pointWidgetTitle);
+            const isRounded = metafieldVal.isRounded
+            if (isRounded) {
                 $('div#point-wrapper').css({
                     "border-radius": "30px 0 0 30px"
                 });
             }
-            // const tpSessionId = urlParams.get('tpsession_id');
-            const srcId = 60; // for add 61 for deduct
-            // do ajax request
-            addPoints(srcId, getTpSessionId(), getWidgetToken());
+            $('div#point-wrapper h5').text(pointWidgetTitle);
         });
+        setTimeout(function(){ 
+            console.log(getWidgetTitle());
+        }, 3000);
+        // check if params exist
+        if(urlParams.has('tpsession_id')) {
+            // get specific params
+            // setTpSessionId(urlParams.get('tpsession_id'));
+            setTpSessionId('60655f85-7927-4d3a-ba36-e5582a39280f');
+            // current points - 2449797
+        }
+        // const tpSessionId = urlParams.get('tpsession_id');
+        const srcId = 60; // for add 61 for deduct
+        const tpSessionId = getTpSessionId(); // '60655f85-7927-4d3a-ba36-e5582a39280f';
+        const accessToken = 'Aef5f85-79ef27qwwd-4d3a-ba36-e5582a3dw'; // static not the accesstoken of app
+
+        // end point url
+        const urlTarget = 'https://cors-anywhere.herokuapp.com/https://tastypoints.io/akm/restapi.php';
+        // do ajax request
+        addPoints(srcId, tpSessionId, accessToken);
 
         // add bind event on checkout button
         $(document).on('click', '.hasPoints', function() {
             if (confirm('This action will deduct ' + $('.product-details li:last-child() span').last().text() + ' points to your current points make sure you purchase the item.')) {
                 const srcId = 61;
+                const tpSessionId = getTpSessionId();
+                const accessToken = 'Aef5f85-79ef27qwwd-4d3a-ba36-e5582a3dw';
                 const usedPoints = $('.product-details li:last-child() span').last().text();
-                const selectedItems = [{
+                const selectedItems = {
                     "item_name" : $('.list-view-item__title').find('a').text(),
                     "item_price" : $('.cart__price div > dl > div:visible > dd').text(),
                     "user_paid_amount" : $('.cart-subtotal__price').text(),
@@ -135,8 +146,8 @@ aren’t available to the outside world. */
                     "item_category_name" : "",
                     "points_used" : usedPoints,
                     "item_page_link" : $('.list-view-item__title').find('a').attr('href')
-                }]
-                deductPoints(srcId, getTpSessionId(), getWidgetToken(), usedPoints, selectedItems);
+                }
+                deductPoints(srcId, tpSessionId, accessToken, usedPoints, selectedItems);
             } else {
                 return false;
             }
@@ -156,7 +167,7 @@ aren’t available to the outside world. */
                 "access_token": accessToken
             }
 
-            ajaxRequest(endPoint(), postData, function(response) {
+            ajaxRequest(urlTarget, postData, function(response) {
                 const resObj = JSON.parse(response);
                 const totalPoints = (resObj != null) ? resObj.total_tp_points : 0;
                 $('div#point-wrapper #point-count').text(totalPoints);
@@ -174,7 +185,7 @@ aren’t available to the outside world. */
                     $('.product-single__meta').find('form').prepend(pointEl);
                     $('.cart__submit-controls input').addClass('hasPoints');
                 }
-
+                // setPoints(totalPoints);
             });
         }
         /**
@@ -191,10 +202,10 @@ aren’t available to the outside world. */
                 "tpsession_id" : tpSessionId,
                 "access_token" : accessToken,
                 "total_points_used" : usedPoints,
-                "used_points_items" : selectedItems
+                "used_points_items" : [selectedItems]
             }
 
-            ajaxRequest(endPoint(), postData, function(response) {
+            ajaxRequest(urlTarget, postData, function(response) {
                 const resObj = JSON.parse(response);
                 const totalPoints = (resObj != null) ? resObj.total_tp_points : 0;
                 $('div#point-wrapper #point-count').text(totalPoints);
