@@ -16,10 +16,3 @@ backend
   branding
     color
     background
-    title
-  earning rules
-    referal link
-  spending rules
-    $5 off discount [200]
-  settings
-    program status [enable, disable]
