@@ -30,7 +30,7 @@
               var obj = $(this),
                   name = obj.attr('name'),
                   value = obj.val();
-                  data[name] = value;
+                  data[name] = $('#shape:checked').val() ? value : false;
               });
 
               $.ajax({

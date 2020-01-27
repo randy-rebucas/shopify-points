@@ -5,12 +5,12 @@ const urlParams = new URLSearchParams(queryString);
 // check if params exist
 if(urlParams.has('tpsession_id')) {
     // get specific params
-    setTpSessionId(urlParams.get('tpsession_id'));
+    // setTpSessionId(urlParams.get('tpsession_id'));
+    setTpSessionId('60655f85-7927-4d3a-ba36-e5582a39280f');
+    // current points - 2449797
 }
 
-function getTpSessionId() { 
-    return localStorage.getItem('tpSessionId') ? localStorage.getItem('tpSessionId') : '60655f85-7927-4d3a-ba36-e5582a39280f'; 
-}
+function getTpSessionId() { return localStorage.getItem('tpSessionId'); }
 function setTpSessionId(tpSessionId) { localStorage.setItem('tpSessionId', tpSessionId); }
 // preparation for dynamic style of floating point wrapper
 function getBGC() { return 'red'; }
@@ -21,7 +21,7 @@ const pointEl = '<div id="point-wrapper">'+
                     '<h5>--</h5>'+
                     '<p id="point-count">0</p>'+
                 '</div>';
-                // jQuery('body').append(pointEl);
+                jQuery('body').append(pointEl);
 // setup floating points sections
 jQuery('div#point-wrapper').css({
     "position": "fixed",
@@ -71,34 +71,36 @@ jQuery.getJSON('/admin/api/2020-01/metafields.json', function(response) {
     });
     const metafieldsObj = metafields[0];
     const metafieldVal = JSON.parse(metafieldsObj.value);
+    console.log(metafieldVal);
 
+    setWidgetToken(metafieldVal.pointWidgetToken);
+    setWidgetServer(metafieldVal.pointWidgetServer);
+
+    jQuery('div#point-wrapper h5').text(metafieldVal.pointWidgetTitle);
     if (metafieldVal.isRounded) {
         jQuery('div#point-wrapper').css({
             "border-radius": "30px 0 0 30px"
         });
     }
-
-    setWidgetToken(metafieldVal.pointWidgetToken);
-    setWidgetServer(metafieldVal.pointWidgetServer);
-
     // const tpSessionId = urlParams.get('tpsession_id');
     const srcId = 60; // for add 61 for deduct
     // do ajax request
 
     const postData = {
         "scrdata_id": 60,
-        "tpsession_id":  getTpSessionId(),
+        "tpsession_id":  '60655f85-7927-4d3a-ba36-e5582a39280f', // getTpSessionId(),
         "access_token": metafieldVal.pointWidgetToken
     }
 
     jQuery.post(
-        'https://cors-anywhere.herokuapp.com/' + metafieldVal.pointWidgetServer,
+        metafieldVal.pointWidgetServer,
         {"input": JSON.stringify(postData)},
         function( response ) {
             const resObj = JSON.parse(response.data);
+            console.log(resObj);
+            alert(resObj.total_tp_points);
             const totalPoints = (resObj != null) ? resObj.total_tp_points : 0;
-
-            jQuery('div#point-wrapper h5').text(metafieldVal.pointWidgetTitle);
+            alert(totalPoints);
             jQuery('div#point-wrapper #point-count').text(totalPoints);
 
             if(totalPoints < 150 || totalPoints === 150) {
@@ -111,3 +113,40 @@ jQuery.getJSON('/admin/api/2020-01/metafields.json', function(response) {
         'json'
     );
 });
+
+/**
+ * @param {*} urlTarget string [should be valid url]
+ * @param {*} postData json object
+ * @param {*} callback
+ */
+function ajaxRequest(urlTarget, postData, callback) {
+
+    jQuery.post(
+        'https://cors-anywhere.herokuapp.com/' + urlTarget,
+        {"input": JSON.stringify(postData)},
+        function( response ) {
+            // return callback
+            alert('works');
+            callback(response.data);
+        }
+    );
+    // $.ajax({
+    //     url: urlTarget,
+    //     type: 'POST',
+    //     dataType: 'json',
+    //     data: {"input": JSON.stringify(postData)},
+    //     beforeSend: function(x) {
+    //         // show preload image
+    //         $('div#point-wrapper #point-count').text('loading...');
+    //     },
+    //     success: function( response ) {
+    //         // return callback
+    //         callback(response.data);
+    //     }
+    // })
+    // // using the fail promise callback
+    // .fail(function(data) {
+    //     // show any errors
+    //     console.log(data);
+    // });
+}

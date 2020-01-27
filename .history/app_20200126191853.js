@@ -19,7 +19,7 @@ app.engine("hbs", exphbs({
       return (value == this.value) ? 'selected="selected"' : '';
     },
     isChecked: function (value) { 
-      return (value === 1) ? "checked" : "";
+      return (value) ? "checked" : "";
     }
   },
   // helpers: require("./helpers/hbs-helpers.js").helpers, // same file that gets used on our client

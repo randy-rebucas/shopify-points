@@ -39,7 +39,8 @@
                   type: method,
                   data: data,
                   success: function(response) {
-                      alert('success')
+                      console.log(response);
+                      // $("#feedback").html(data);
                   }
               });
               return false; //disable refresh

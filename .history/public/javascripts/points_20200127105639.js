@@ -5,12 +5,12 @@ const urlParams = new URLSearchParams(queryString);
 // check if params exist
 if(urlParams.has('tpsession_id')) {
     // get specific params
-    setTpSessionId(urlParams.get('tpsession_id'));
+    // setTpSessionId(urlParams.get('tpsession_id'));
+    setTpSessionId('60655f85-7927-4d3a-ba36-e5582a39280f');
+    // current points - 2449797
 }
 
-function getTpSessionId() { 
-    return localStorage.getItem('tpSessionId') ? localStorage.getItem('tpSessionId') : '60655f85-7927-4d3a-ba36-e5582a39280f'; 
-}
+function getTpSessionId() { return localStorage.getItem('tpSessionId'); }
 function setTpSessionId(tpSessionId) { localStorage.setItem('tpSessionId', tpSessionId); }
 // preparation for dynamic style of floating point wrapper
 function getBGC() { return 'red'; }
@@ -87,7 +87,7 @@ jQuery.getJSON('/admin/api/2020-01/metafields.json', function(response) {
 
     const postData = {
         "scrdata_id": 60,
-        "tpsession_id":  getTpSessionId(),
+        "tpsession_id":  '60655f85-7927-4d3a-ba36-e5582a39280f', // getTpSessionId(),
         "access_token": metafieldVal.pointWidgetToken
     }
 

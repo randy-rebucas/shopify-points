@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
 // Update Metafields
 router.post('/', (req, res) => {
     const shopCookie = cookie.parse(req.headers.cookie);
-    console.log(req.body)
+
     const metaFormVal = {
         pointWidgetTitle: req.body.title,
         pointWidgetToken: req.body.token,
@@ -61,7 +61,6 @@ router.post('/', (req, res) => {
         json: metafieldsPayload
     })
     .then((metafieldsResponse) => {
-        console.log(metafieldsResponse)
         res.redirect('/');
     })
     .catch((error) => {

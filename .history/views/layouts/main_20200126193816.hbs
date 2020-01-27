@@ -37,7 +37,7 @@
                   // see the (*)
                   url: url,
                   type: method,
-                  data: data,
+                  data: obj.serialize(),
                   success: function(response) {
                       alert('success')
                   }
