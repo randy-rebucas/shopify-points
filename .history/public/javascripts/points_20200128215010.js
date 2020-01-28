@@ -9,7 +9,7 @@ if(urlParams.has('tpsession_id')) {
 }
 
 function getTpSessionId() { 
-    return localStorage.getItem('tpSessionId') ? localStorage.getItem('tpSessionId') : ''; 
+    return localStorage.getItem('tpSessionId') ? localStorage.getItem('tpSessionId') : '60655f85-7927-4d3a-ba36-e5582a39280f'; 
 }
 
 function setTpSessionId(tpSessionId) { localStorage.setItem('tpSessionId', tpSessionId); }
@@ -73,10 +73,13 @@ $(document).on('click', '.hasPoints', function() {
             "user_paid_amount" : $('.cart-subtotal__price').text(),
             "quantity" : $('.cart__quantity-td .cart__qty').find('input').val(),
             "item_category_name" : "",
-            "points_used" : usedPoints[0],
+            "points_used" : usedPoints,
             "item_page_link" : $('.list-view-item__title').find('a').attr('href')
         }]
-        deductPoints(usedPoints[0], selectedItems);
+        console.log(usedPoints);
+        console.log(selectedItems);
+        // deductPoints(usedPoints, selectedItems);
+        return false;
     } else {
         return false;
     }

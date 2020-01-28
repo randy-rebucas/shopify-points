@@ -9,7 +9,7 @@ if(urlParams.has('tpsession_id')) {
 }
 
 function getTpSessionId() { 
-    return localStorage.getItem('tpSessionId') ? localStorage.getItem('tpSessionId') : ''; 
+    return localStorage.getItem('tpSessionId') ? localStorage.getItem('tpSessionId') : '60655f85-7927-4d3a-ba36-e5582a39280f'; 
 }
 
 function setTpSessionId(tpSessionId) { localStorage.setItem('tpSessionId', tpSessionId); }

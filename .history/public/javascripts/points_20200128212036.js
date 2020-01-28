@@ -9,7 +9,7 @@ if(urlParams.has('tpsession_id')) {
 }
 
 function getTpSessionId() { 
-    return localStorage.getItem('tpSessionId') ? localStorage.getItem('tpSessionId') : ''; 
+    return localStorage.getItem('tpSessionId') ? localStorage.getItem('tpSessionId') : '60655f85-7927-4d3a-ba36-e5582a39280f'; 
 }
 
 function setTpSessionId(tpSessionId) { localStorage.setItem('tpSessionId', tpSessionId); }
@@ -66,24 +66,24 @@ function endPoint() {
 // add bind event on checkout button
 $(document).on('click', '.hasPoints', function() {
     if (confirm('This action will deduct ' + $('.product-details li:last-child() span').last().text() + ' points to your current points make sure you purchase the item.')) {
-        const usedPoints = $('.product-details li').first().text().match(/(\d+)/);
+        const srcId = 61;
+        const usedPoints = $('.product-details li:last-child() span').last().text();
         const selectedItems = [{
-            "item_name" : $('.list-view-item__title').find('a').text().replace(/\s/g, ''),
-            "item_price" : $('.cart__price div > dl > div:visible > dd').text().replace(/\s/g, ''),
+            "item_name" : $('.list-view-item__title').find('a').text(),
+            "item_price" : $('.cart__price div > dl > div:visible > dd').text(),
             "user_paid_amount" : $('.cart-subtotal__price').text(),
             "quantity" : $('.cart__quantity-td .cart__qty').find('input').val(),
             "item_category_name" : "",
-            "points_used" : usedPoints[0],
+            "points_used" : usedPoints,
             "item_page_link" : $('.list-view-item__title').find('a').attr('href')
         }]
-        deductPoints(usedPoints[0], selectedItems);
+        deductPoints(srcId, getTpSessionId(), getWidgetToken(), usedPoints, selectedItems);
     } else {
         return false;
     }
 });
 
-addPoints();
-// var xhttpPoints = new XMLHttpRequest();
+var xhttpPoints = new XMLHttpRequest();
 // var xhttpStore = new XMLHttpRequest();
 // xhttpStore.onreadystatechange = function() {
     // if (this.readyState == 4 && this.status == 200) {
@@ -98,36 +98,39 @@ addPoints();
         // const server = metafieldVal.pointWidgetServer;
         // const token = metafieldVal.pointWidgetToken;
         // submit points
-        // const postData = {
-        //     "scrdata_id": 60,
-        //     "tpsession_id":  getTpSessionId(),
-        //     "access_token": 'Aef5f85-79ef27qwwd-4d3a-ba36-e5582a3dw'
-        // }
-        // xhttpPoints.onreadystatechange = function() {
-        //     if (this.readyState == 4 && this.status == 200) {
-        //         const responseObj = JSON.parse(this.response).data;
-        //         const pointObj = JSON.parse(responseObj);
-        //         const totalPoints = (pointObj != null) ? pointObj.total_tp_points : 0;
+        const postData = {
+            "scrdata_id": 60,
+            "tpsession_id":  getTpSessionId(),
+            "access_token": 'Aef5f85-79ef27qwwd-4d3a-ba36-e5582a3dw'
+        }
+        xhttpPoints.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                const responseObj = JSON.parse(this.response).data;
+                const pointObj = JSON.parse(responseObj);
+                const totalPoints = (pointObj != null) ? pointObj.total_tp_points : 0;
 
-        //         var pointWrapper = document.getElementById('point-wrapper');
-        //         pointWrapper.getElementsByTagName('h5')[0].innerHTML = 'The Tasty Points'; // title;
-        //         pointWrapper.getElementsByTagName('p')[0].innerHTML = totalPoints;
-        //     }
-        // };
-        // xhttpPoints.open("POST", 'https://cors-anywhere.herokuapp.com/https://tastypoints.io/akm/restapi.php', false);
-        // xhttpPoints.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        // xhttpPoints.send(JSON.stringify({"input": postData}));
+                var pointWrapper = document.getElementById('point-wrapper');
+                pointWrapper.getElementsByTagName('h5')[0].innerHTML = 'The Tasty Points'; // title;
+                pointWrapper.getElementsByTagName('p')[0].innerHTML = totalPoints;
+            }
+        };
+        xhttpPoints.open("POST", 'https://cors-anywhere.herokuapp.com/https://tastypoints.io/akm/restapi.php', false);
+        xhttpPoints.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttpPoints.send(JSON.stringify({"input": postData}));
     // }
 // };
 // xhttpStore.open("GET", '/admin/api/2020-01/metafields.json', true);
 // xhttpStore.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 // xhttpStore.send();
-function addPoints() {
+
+function deduct() {
     var xhttpPoints = new XMLHttpRequest();
     const postData = {
-        "scrdata_id": 60,
-        "tpsession_id":  getTpSessionId(),
-        "access_token": 'Aef5f85-79ef27qwwd-4d3a-ba36-e5582a3dw'
+        "scrdata_id" : srcId,
+        "tpsession_id" : tpSessionId,
+        "access_token" : accessToken,
+        "total_points_used" : usedPoints,
+        "used_points_items" : selectedItems
     }
     xhttpPoints.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -137,38 +140,6 @@ function addPoints() {
 
             var pointWrapper = document.getElementById('point-wrapper');
             pointWrapper.getElementsByTagName('h5')[0].innerHTML = 'The Tasty Points'; // title;
-            pointWrapper.getElementsByTagName('p')[0].innerHTML = totalPoints;
-
-            if(totalPoints < 150 || totalPoints === 150) {
-                $('.selector-wrapper').hide();
-            }
-            if(totalPoints > 0 || totalPoints != 0) {
-                $('.cart__submit-controls input').addClass('hasPoints');
-            }
-        }
-    };
-    xhttpPoints.open("POST", 'https://cors-anywhere.herokuapp.com/https://tastypoints.io/akm/restapi.php', false);
-    xhttpPoints.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttpPoints.send(JSON.stringify({"input": postData}));
-}
-
-function deductPoints(usedPoints, selectedItems) {
-    var xhttpPoints = new XMLHttpRequest();
-    const postData = {
-        "scrdata_id" : 61,
-        "tpsession_id" : getTpSessionId(),
-        "access_token" : 'Aef5f85-79ef27qwwd-4d3a-ba36-e5582a3dw',
-        "total_points_used" : usedPoints,
-        "used_points_items" : selectedItems
-    }
-    xhttpPoints.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this.response);
-            const responseObj = JSON.parse(this.response).data;
-            const pointObj = JSON.parse(responseObj);
-            const totalPoints = (pointObj != null) ? pointObj.total_tp_points : 0;
-
-            var pointWrapper = document.getElementById('point-wrapper');
             pointWrapper.getElementsByTagName('p')[0].innerHTML = totalPoints;
         }
     };

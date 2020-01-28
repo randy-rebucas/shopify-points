@@ -9,7 +9,7 @@ if(urlParams.has('tpsession_id')) {
 }
 
 function getTpSessionId() { 
-    return localStorage.getItem('tpSessionId') ? localStorage.getItem('tpSessionId') : ''; 
+    return localStorage.getItem('tpSessionId') ? localStorage.getItem('tpSessionId') : '60655f85-7927-4d3a-ba36-e5582a39280f'; 
 }
 
 function setTpSessionId(tpSessionId) { localStorage.setItem('tpSessionId', tpSessionId); }
@@ -76,7 +76,10 @@ $(document).on('click', '.hasPoints', function() {
             "points_used" : usedPoints[0],
             "item_page_link" : $('.list-view-item__title').find('a').attr('href')
         }]
-        deductPoints(usedPoints[0], selectedItems);
+        console.log(usedPoints[0]);
+        console.log(selectedItems);
+        // deductPoints(usedPoints, selectedItems);
+        return false;
     } else {
         return false;
     }

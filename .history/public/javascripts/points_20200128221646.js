@@ -126,7 +126,7 @@ function addPoints() {
     var xhttpPoints = new XMLHttpRequest();
     const postData = {
         "scrdata_id": 60,
-        "tpsession_id":  getTpSessionId(),
+        "tpsession_id":  '', // getTpSessionId(),
         "access_token": 'Aef5f85-79ef27qwwd-4d3a-ba36-e5582a3dw'
     }
     xhttpPoints.onreadystatechange = function() {
