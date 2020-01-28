@@ -82,7 +82,7 @@ $(document).on('click', '.hasPoints', function() {
     }
 });
 
-
+addPoints();
 // var xhttpPoints = new XMLHttpRequest();
 // var xhttpStore = new XMLHttpRequest();
 // xhttpStore.onreadystatechange = function() {
@@ -104,8 +104,6 @@ $(document).on('click', '.hasPoints', function() {
 // xhttpStore.open("GET", '/admin/api/2020-01/metafields.json', true);
 // xhttpStore.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 // xhttpStore.send();
-
-addPoints();
 function addPoints() {
     var xhttpPoints = new XMLHttpRequest();
     const postData = {
