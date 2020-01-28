@@ -1,0 +1,49 @@
+getting started
+  email
+
+  i want to reward my customers for 
+    list
+      signup
+      birthday
+      make an order
+      facebook share
+      twitter share
+  setup rewards
+    200 points
+    250 points
+    300 points
+    350 points
+  ---
+backend
+  branding
+    color
+    background
+    title
+  earning rules
+    referal link
+  spending rules
+    $5 off discount [200]
+  settings
+    program status [enable, disable]
+    =============
+View Shopify account data
+View products
+View orders
+Manage customers
+Manage marketing
+Manage gift cards
+Manage your Online Store
+Manage other data
+----------------
+locales/en.default.json line 362 [emplty the value]
+
+section/product-template.liquid replace line 148
+
+<select class="single-option-selector single-option-selector-{{ section.id }} product-form__input"
+      id="SingleOptionSelector-{{ forloop.index0 }}"
+      data-index="option{{ forloop.index }}"
+    >
+    {% for variant in product.variants %}
+  <option value="{{ variant.title }}" {%- if variant == current_variant %} selected="selected" {%- endif -%}>{{ variant.price | money }} for {{ variant.title }} TP</option>
+  {% endfor %}
+</select> 
