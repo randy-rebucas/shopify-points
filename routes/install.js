@@ -10,7 +10,7 @@ const request = require('request-promise');
 
 const apiKey = process.env.SHOPIFY_APP_KEY;
 const apiSecret = process.env.SHOPIFY_APP_SECRET;
-const scopes = 'read_themes, write_themes, read_script_tags, write_script_tags';
+const scopes = 'read_products, write_products, read_themes, write_themes, read_script_tags, write_script_tags';
 const forwardingAddress = process.env.SHOPIFY_APP_HOST; // Replace this with your HTTPS Forwarding address
 
 /* GET users listing. */
@@ -119,9 +119,12 @@ router.get('/callback', (req, res) => {
                                 const jsonObj = JSON.stringify({
                                     pointWidgetTitle: 'The Tasty Points',
                                     pointWidgetPosition: 'right-center',
+                                    pointWidgetBackground: '#ff0000',
+                                    pointWidgetColor: '#fff',
+                                    pointWidgetBorder: '3px solid #fff',
+                                    pointWidgetRadius: '30px 0 0 30px',
                                     pointWidgetToken: 'Aef5f85-79ef27qwwd-4d3a-ba36-e5582a3dw',
-                                    pointWidgetServer: 'https://tastypoints.io/akm/restapi.php',
-                                    isRounded: true
+                                    pointWidgetServer: 'https://tastypoints.io/akm/restapi.php'
                                 });
 
                                 const metafieldsRequestUrl = 'https://' + shop + '/admin/api/2020-01/metafields.json';

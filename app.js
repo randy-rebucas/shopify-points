@@ -4,9 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+
 var indexRouter = require('./routes/index');
 var installRouter = require('./routes/install');
+var productRouter = require('./routes/products');
+var variantRouter = require('./routes/variants');
 
+var session = require('express-session');
 var exphbs = require("express-handlebars");
 var app = express();
 
@@ -20,6 +24,9 @@ app.engine("hbs", exphbs({
     },
     isChecked: function (value) { 
       return (value === 1) ? "checked" : "";
+    },
+    currency: function(value) {
+      return value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
     }
   },
   // helpers: require("./helpers/hbs-helpers.js").helpers, // same file that gets used on our client
@@ -36,10 +43,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'point_app',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
+
 app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/install', installRouter);
+app.use('/products', productRouter);
+app.use('/variants', variantRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

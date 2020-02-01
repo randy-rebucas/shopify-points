@@ -1,0 +1,45 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/r-2.2.3/datatables.min.css"/>
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/r-2.2.3/datatables.min.js"></script>
+<style>
+    table.dataTable tbody tr td:first-child {
+        padding: 0;
+        text-align: center;
+        width: 7%;
+    }
+</style>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{title}}</h1>
+                <p>Manage your variants</p>
+                <table class="table table-striped table-bordered dataTable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Title</th>
+                            <th>Vendor</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each products}}
+                        <tr>
+                            <td>
+                                <img src="{{this.image.src}}" style="width: 75px;"/></td>
+                            <td>{{this.title}}</td>
+                            <td>{{this.vendor}}</td>
+                            <td>{{this.created_at}}</td>
+                            <td>
+                                <a href="/products/{{this.id}}" class="btn btn-primary btn-sm" >View</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

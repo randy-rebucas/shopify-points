@@ -23,31 +23,35 @@ jQuery('body').append(pointEl);
 // setup floating points sections
 jQuery('div#point-wrapper').css({
     "position": "fixed",
+    
     "right": 0,
-    "bottom": "30%",
-    "background": 'red',
-    "border": "3px solid #fff",
-    "color": "#fff",
-    "padding": ".6em 2em",
-    "border-radius": "30px 0 0 30px",
-    "-webkit-box-shadow": "-7px 7px 9px -8px rgba(0,0,0,0.73)",
-    "-moz-box-shadow": "-7px 7px 9px -8px rgba(0,0,0,0.73)",
-    "box-shadow": "-7px 7px 9px -8px rgba(0,0,0,0.73)",
-    "z-index": 999
+    "bottom": "5%",
+
+    "background": '#FF7F32', // hex
+    "color": "#fff", // hex
+    "border": "3px solid rgb(255, 255, 255)", // width style color
+    "border-radius": "10px 0 0 10px", // top-left, top-right, bottom-right, bottom-left
+
+    "padding": "0.4em 2em .8em",
+    "-webkit-box-shadow": "1em 7px 8px -7px rgba(0,0,0,0.73)",
+    "-moz-box-shadow": "1em 7px 8px -7px rgba(0,0,0,0.73)",
+    "box-shadow": "1em 7px 8px -7px rgba(0,0,0,0.73)",
+    "z-index": 999,
+    "text-align": "center"
 });
 
 jQuery('div#point-wrapper h5').css({
     "padding": 0,
     "margin": 0,
-    "text-transform": "uppercase",
-    "text-align": "right"
+    "font-size": "14px",
+    "text-transform": "capitalize",
 });
 
 jQuery('div#point-wrapper #point-count').css({
-    "font-size": "28px",
+    "font-size": "22px",
     "color": "#fff",
-    "text-align": "right",
-    "line-height": ".8"
+    "line-height": ".8",
+    "margin": 0
 });
 
 widgetToken = '';
@@ -83,29 +87,31 @@ $(document).on('click', '.hasPoints', function() {
 });
 
 
-// var xhttpPoints = new XMLHttpRequest();
 // var xhttpStore = new XMLHttpRequest();
 // xhttpStore.onreadystatechange = function() {
-    // if (this.readyState == 4 && this.status == 200) {
-        // const metafieldsRes = JSON.parse(this.response).metafields;
-        // const metafields =  metafieldsRes.filter(function(metafield) {
-        //     return metafield.key == 'points';
-        // });
-        // const metafieldsObj = metafields[0];
-        // const metafieldVal = JSON.parse(metafieldsObj.value);
-        // console.log(metafieldVal);
-        // const title = metafieldVal.pointWidgetTitle;
-        // const server = metafieldVal.pointWidgetServer;
-        // const token = metafieldVal.pointWidgetToken;
-        // submit points
-        // addPoints();
-    // }
+//     if (this.readyState == 4 && this.status == 200) {
+//         const metafieldsRes = JSON.parse(this.response).metafields;
+//         const metafields =  metafieldsRes.filter(function(metafield) {
+//             return metafield.key == 'points';
+//         });
+//         const metafieldsObj = metafields[0];
+//         const metafieldVal = JSON.parse(metafieldsObj.value);
+
+//         const title = metafieldVal.pointWidgetTitle;
+//         const server = metafieldVal.pointWidgetServer;
+//         const token = metafieldVal.pointWidgetToken;
+//         // submit points
+//         addPoints();
+//         console.log(metafieldVal)
+//     }
 // };
+
 // xhttpStore.open("GET", '/admin/api/2020-01/metafields.json', true);
 // xhttpStore.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 // xhttpStore.send();
 
 addPoints();
+
 function addPoints() {
     var xhttpPoints = new XMLHttpRequest();
     const postData = {
@@ -120,11 +126,14 @@ function addPoints() {
             const totalPoints = (pointObj != null) ? pointObj.total_tp_points : 0;
 
             var pointWrapper = document.getElementById('point-wrapper');
-            pointWrapper.getElementsByTagName('h5')[0].innerHTML = 'The Tasty Points'; // title;
+            pointWrapper.getElementsByTagName('h5')[0].innerHTML = 'My Tasty Points'; // title;
             pointWrapper.getElementsByTagName('p')[0].innerHTML = totalPoints;
 
             if(totalPoints < 150 || totalPoints === 150) {
                 $('.selector-wrapper').hide();
+            }
+            if(totalPoints == 0) {
+                $('#point-wrapper').remove();
             }
             if(totalPoints > 0 || totalPoints != 0) {
                 $('.cart__submit-controls input').addClass('hasPoints');
@@ -147,7 +156,6 @@ function deductPoints(usedPoints, selectedItems) {
     }
     xhttpPoints.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.response);
             const responseObj = JSON.parse(this.response).data;
             const pointObj = JSON.parse(responseObj);
             const totalPoints = (pointObj != null) ? pointObj.total_tp_points : 0;

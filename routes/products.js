@@ -3,25 +3,40 @@ var express = require('express');
 var router = express.Router();
 const cookie = require('cookie');
 const request = require('request-promise');
-
-// Get Metafields
+// Get Products
 router.get('/', (req, res) => {
     const shopCookie = cookie.parse(req.headers.cookie);
-    const metafieldsRequestUrl = 'https://' + shopCookie.shopOrigin + '/admin/api/2020-01/metafields.json';
-    const metafieldsRequestHeaders = {
+    const productsRequestUrl = 'https://' + shopCookie.shopOrigin + '/admin/api/2020-01/products.json';
+    const productsRequestHeaders = {
       'X-Shopify-Access-Token': shopCookie.token
     };
 
-    request.get(metafieldsRequestUrl, {
-        headers: metafieldsRequestHeaders
+    request.get(productsRequestUrl, {
+        headers: productsRequestHeaders
     })
-    .then((metafieldsResponse) => {
-        const metaFields = JSON.parse(metafieldsResponse);
-        var metafieldsObj =  metaFields.metafields.filter(function(metafield) {
-            return metafield.key == 'points';
-        })[0];
-        const metaFieldVal = JSON.parse(metafieldsObj.value);
-        res.render('index', {title: 'Points app', metafieldId: metafieldsObj.id, metavalue: metaFieldVal})
+    .then((productsResponse) => {
+        const productList = JSON.parse(productsResponse).products;
+        res.render('products/list', {title: 'Products', products: productList})
+    })
+    .catch((error) => {
+        res.status(error.statusCode).send(error.error.error_description);
+    });
+});
+
+router.get('/:productId', (req, res) => {
+ 
+    const shopCookie = cookie.parse(req.headers.cookie);
+    const variantsRequestUrl = 'https://' + shopCookie.shopOrigin + '/admin/api/2020-01/products/' + req.params.productId + '/variants.json';
+    const variantsRequestHeaders = {
+      'X-Shopify-Access-Token': shopCookie.token
+    };
+
+    request.get(variantsRequestUrl, {
+        headers: variantsRequestHeaders
+    })
+    .then((variantsResponse) => {
+        const varientList = JSON.parse(variantsResponse).variants;
+        res.render('products/variants/list', {title: 'Variants', variants: varientList})
     })
     .catch((error) => {
         res.status(error.statusCode).send(error.error.error_description);
@@ -60,7 +75,6 @@ router.post('/', (req, res) => {
         json: metafieldsPayload
     })
     .then((metafieldsResponse) => {
-        console.log(metafieldsResponse)
         res.redirect('/');
     })
     .catch((error) => {

@@ -1,0 +1,36 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{title}}</h1>
+                <p>Manage your products</p>
+                <table class="table table-striped table-bordered dataTable" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Price</th>
+                            <th>Option</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each variants}}
+                        <tr>
+
+                            <td>
+                                <input type="text" class="form-control form-control-sm" id="title-{{this.id}}" name="title" value="{{this.title}}">
+                            </td>
+                            <td>{{this.option1}}</td>
+                            <td>{{this.price}}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm ajaxSubmit" id="{{this.id}}">Update</a>
+                            </td>
+
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
